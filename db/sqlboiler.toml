@@ -1,0 +1,18 @@
+output = "models"
+package = "models"
+wipe = true
+add-enum-types = true
+add-global-variants = true
+
+[psql]
+	dbname = "shipper-core"
+	host = "host.docker.internal"
+	port = 5432
+	sslmode = "disable"
+	user = "admin"
+	pass = "password"
+	blacklist = ["migrations"]
+
+[auto-columns]
+	created = "createdAt"
+	updated = "updatedAt"
