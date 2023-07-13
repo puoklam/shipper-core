@@ -2,6 +2,8 @@ package db
 
 import (
 	"database/sql"
+	"os"
+	"sync"
 	"time"
 
 	_ "github.com/lib/pq"
@@ -9,15 +11,18 @@ import (
 )
 
 var DB *sql.DB
+var once sync.Once
 
-func init() {
-	db, err := sql.Open("postgres", "")
-	if err != nil {
-		panic(err)
-	}
-	db.SetMaxOpenConns(25)
-	db.SetMaxIdleConns(25)
-	db.SetConnMaxLifetime(5 * time.Minute)
-	DB = db
-	boil.SetDB(DB)
+func Init() (err error) {
+	once.Do(func() {
+		DB, err = sql.Open("postgres", os.Getenv("DB_URL"))
+		if err != nil {
+			return
+		}
+		DB.SetMaxOpenConns(25)
+		DB.SetMaxIdleConns(25)
+		DB.SetConnMaxLifetime(5 * time.Minute)
+		boil.SetDB(DB)
+	})
+	return
 }

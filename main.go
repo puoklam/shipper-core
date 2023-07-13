@@ -20,8 +20,13 @@ func init() {
 		os.Setenv("DB_URL", "postgres://admin:password@host.docker.internal/shipper-core?sslmode=disable")
 		os.Setenv("MIGRATION_SRC_URL", "./db/migrations")
 	}
+
 	err := db.Migrate()
-	if err != nil && !errors.Is(err, migrate.ErrNoChange){
+	if err != nil && !errors.Is(err, migrate.ErrNoChange) {
+		log.Fatalln(err)
+	}
+
+	if err = db.Init(); err != nil {
 		log.Fatalln(err)
 	}
 }
