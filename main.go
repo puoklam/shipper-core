@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -37,7 +36,7 @@ func main() {
 
 	go func() {
 		<-c
-		fmt.Println("exit")
+		log.Println("exit")
 		os.Exit(0)
 	}()
 

@@ -57,7 +57,8 @@ func (h *Handler) createUser(w http.ResponseWriter, r *http.Request) {
 		htp.WriteError(w, http.StatusBadRequest)
 	}
 
-	vb := validation.NewUser().From(user)
+	vb := validation.NewUser()
+	vb.From(user)
 	if err = validation.Vali.Struct(vb); err != nil {
 		log.Println(err)
 		htp.WriteError(w, http.StatusBadRequest)

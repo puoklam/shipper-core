@@ -18,17 +18,16 @@ type UserValidator struct {
 	Email    string `validate:"required,email"`
 }
 
-func (v *UserValidator) From(u *models.User) *UserValidator {
+func (v *UserValidator) From(u *models.User) {
 	v.Username = u.Username
 	v.Password = u.Password
 	v.Email = u.Email
-	return v
 }
 
 func (v *UserValidator) Done() {
 	userpool.Put(v)
 }
 
-func NewUser() *UserValidator {
+func NewUser() Validator[*models.User] {
 	return userpool.Get().(*UserValidator)
 }
